@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: fleetstream
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/fleetstream}
+    username: ${DB_USER:learning}
+    password: ${DB_PASSWORD:learning_local_only}
+  flyway:
+    enabled: true
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/fleetstream}
+    user: ${DB_USER:learning}
+    password: ${DB_PASSWORD:learning_local_only}
+  r2dbc:
+    url: ${R2DBC_URL:r2dbc:postgresql://localhost:5432/fleetstream}
+    username: ${DB_USER:learning}
+    password: ${DB_PASSWORD:learning_local_only}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      enable-auto-commit: false
+      group-id: fleetstream-v1
+server:
+  address: ${SERVER_ADDRESS:127.0.0.1}
+  port: ${SERVER_PORT:8080}
+  shutdown: graceful
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: never
+      probes:
+        enabled: true
+# TODO: D4 configure JWT issuer/audience and endpoint policies in SecurityConfig where required.
+# TODO: D7 protect metrics and configure readiness dependency checks.

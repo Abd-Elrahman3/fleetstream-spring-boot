@@ -1,0 +1,25 @@
+@base = http://localhost:8080
+@token = REPLACE_WITH_LOCAL_TEST_TOKEN
+
+# Target examples; routes are learner work and UUIDs must be replaced.
+
+### Accept telemetry durably (replace timestamp with test fixture time)
+POST {{base}}/api/v1/telemetry/batches
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"points":[{"eventId":"00000000-0000-0000-0000-000000000001","deviceId":"00000000-0000-0000-0000-000000000002","sequence":12,"recordedAt":"2026-01-01T12:00:00Z","latitude":30.0,"longitude":31.0}]}
+
+### Resume strictly after sequence 12
+GET {{base}}/api/v1/devices/00000000-0000-0000-0000-000000000002/events
+Authorization: Bearer {{token}}
+Accept: text/event-stream
+Last-Event-ID: 12
+
+### Issue a one-use WebSocket ticket
+POST {{base}}/api/v1/devices/00000000-0000-0000-0000-000000000002/stream-tickets
+Authorization: Bearer {{token}}
+Origin: http://localhost:3000
+Content-Type: application/json
+
+{}
